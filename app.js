@@ -1,5 +1,6 @@
-const BASE_URL = '/';
-const MATERIAS = {};
+// app.js
+const BASE_URL = '/v2/';
+const MATERIAS = new Map();
 
 // Cargar datos iniciales
 fetch('info.json')
@@ -8,7 +9,7 @@ fetch('info.json')
         // Procesar estructura de datos
         Object.values(data).forEach(semestre => {
             Object.entries(semestre).forEach(([materia, info]) => {
-                MATERIAS[materia] = info["Materias previas"];
+                MATERIAS.set(materia, info["Materias previas"]);
             });
         });
         render();
@@ -51,22 +52,23 @@ function renderHome(container) {
 }
 
 function renderMateria(materia, container) {
-    const previasDirectas = MATERIAS[materia] || [];
+    const previasDirectas = MATERIAS.get(materia) || [];
     const todasPrevias = new Set();
-    const visited = new Set(); // Para detección de ciclos
+    const visited = new Set();
 
-    // Función recursiva mejorada
+    // Función recursiva mejorada con detección de ciclos
     const getDependencias = (currentMateria, path = []) => {
         if (visited.has(currentMateria)) return;
         visited.add(currentMateria);
 
         // Detectar ciclos
         if (path.includes(currentMateria)) {
-            console.warn(`Ciclo detectado: ${[...path, currentMateria].join(' → ')}`);
+            console.warn(`🚨 Ciclo detectado: ${[...path, currentMateria].join(' → ')}`);
             return;
         }
 
-        (MATERIAS[currentMateria] || []).forEach(previa => {
+        const dependencias = MATERIAS.get(currentMateria) || [];
+        dependencias.forEach(previa => {
             if (!previasDirectas.includes(previa)) {
                 todasPrevias.add(previa);
             }
@@ -74,10 +76,16 @@ function renderMateria(materia, container) {
         });
     };
 
+    // Procesar dependencias
     previasDirectas.forEach(previa => {
+        if (!MATERIAS.has(previa)) {
+            console.warn(`⚠️ Materia no encontrada: ${previa}`);
+            return;
+        }
         getDependencias(previa, [materia]);
     });
 
+    // Construir HTML
     container.innerHTML = `
         <a href="${BASE_URL}#" class="back-button">← Volver al listado</a>
         <div class="materia-header">
@@ -107,4 +115,9 @@ function renderMateria(materia, container) {
             </div>
         </div>
     `;
+}
+
+// Manejo inicial de carga
+if (window.location.hash) {
+    render();
 }
