@@ -147,3 +147,31 @@ body {
 p {
     color: var(--text-secondary);
 }
+
+/* styles.css */
+.materia-header-detalle {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    margin: 0 0 25px 0;
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.materia-header-detalle .materia-info {
+    order: 2; /* Texto a la derecha */
+    flex-grow: 1;
+}
+
+.materia-header-detalle .estado-materia {
+    order: 1; /* Botón a la izquierda */
+    font-size: 1.4em;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.materia-header-detalle .estado-materia:hover {
+    transform: scale(1.1);
+}
