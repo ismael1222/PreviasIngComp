@@ -108,7 +108,7 @@ function renderMateria(materia, container) {
             </div>
             
             <div class="requisito-tipo">
-                <h3>Requisitos colaterales (${todasPrevias.size})</h3>
+                <h3>Requisitos colaterales (${todasPrevias.size?todasPrevias.size:"error"})</h3>
                 ${todasPrevias.size ? 
                     [...todasPrevias].map(p => {
                         const sem = MATERIAS.get(p)?.semestre || '?';
