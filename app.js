@@ -9,7 +9,7 @@ fetch('info.json')
         Object.entries(data).forEach(([semestreKey, semestre]) => {
             Object.entries(semestre).forEach(([materia, info]) => {
                 MATERIAS.set(materia, {
-                    previas: info["Materias previas"],
+                    previas: info["Materias previas"]|[],
                     semestre: semestreKey
                 });
             });
@@ -55,7 +55,7 @@ function renderHome(container) {
 
 function renderMateria(materia, container) {
     const materiaInfo = MATERIAS.get(materia) || { previas: [], semestre: '?' };
-    const previasDirectas = materiaInfo.previas|[""];
+    const previasDirectas = materiaInfo.previas;
     const semestreActual = materiaInfo.semestre;
     const todasPrevias = new Set(); // Declaración faltante
     const visited = new Set();
