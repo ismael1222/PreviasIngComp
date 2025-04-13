@@ -1,4 +1,3 @@
-// app.js
 const BASE_URL = '/';
 const MATERIAS = new Map();
 const COOKIE_NAME = 'materias_completadas';
@@ -24,31 +23,47 @@ const updateCookie = (materia, completada) => {
     });
 
     estado[materia] = completada;
-    document.cookie = `${COOKIE_NAME}=${encodeURIComponent(JSON.stringify(estado))}; path=${BASE_URL}; max-age=31536000`; // 1 año de duración
+    document.cookie = `${COOKIE_NAME}=${encodeURIComponent(JSON.stringify(estado))}; path=${BASE_URL}; max-age=31536000`;
 };
 
-// Función para crear links de materias
-function createMateriaLink(materia, esColateral = false) {
+// Función para crear elementos de materia
+function createMateriaElement(materia, esHeader = false) {
     const sem = MATERIAS.get(materia)?.semestre || '?';
-    const estado = getCookieJSON()[materia] ? '✅' : '❌';
+    const completada = getCookieJSON()[materia] || false;
+    const estado = completada ? '✅' : '❌';
     
-    const link = document.createElement('a');
-    link.className = `materia-link ${getCookieJSON()[materia] ? 'completada' : ''}`;
-    link.href = `#/materia/${encodeURIComponent(materia)}`;
-    link.innerHTML = `
+    const elemento = document.createElement(esHeader ? 'div' : 'a');
+    const clase = esHeader ? 'materia-header' : 'materia-link';
+    
+    if (!esHeader) {
+        elemento.href = `#/materia/${encodeURIComponent(materia)}`;
+    }
+    
+    elemento.className = `${clase} ${completada ? 'completada' : ''}`;
+    elemento.innerHTML = `
         <span class="estado-materia">${estado}</span>
-        S${sem}: ${materia}
+        <span class="materia-info">
+            S${sem}: ${materia}
+        </span>
     `;
 
-    link.querySelector('.estado-materia').addEventListener('click', (e) => {
+    elemento.querySelector('.estado-materia').addEventListener('click', (e) => {
         e.preventDefault();
-        const nuevoEstado = !getCookieJSON()[materia];
+        const nuevoEstado = !completada;
         updateCookie(materia, nuevoEstado);
         e.target.textContent = nuevoEstado ? '✅' : '❌';
-        link.classList.toggle('completada', nuevoEstado);
+        elemento.classList.toggle('completada', nuevoEstado);
+        
+        // Actualizar en todas las instancias
+        if (esHeader) {
+            document.querySelectorAll(`.materia-link:contains("${materia}")`).forEach(link => {
+                link.querySelector('.estado-materia').textContent = nuevoEstado ? '✅' : '❌';
+                link.classList.toggle('completada', nuevoEstado);
+            });
+        }
     });
 
-    return link;
+    return elemento;
 }
 
 // Cargar datos iniciales
@@ -92,7 +107,7 @@ function renderHome(container) {
                         <div class="semestre">
                             <h2>Semestre ${semestreKey}</h2>
                             ${Object.keys(semestre).map(materia => 
-                                createMateriaLink(materia).outerHTML
+                                createMateriaElement(materia).outerHTML
                             ).join('')}
                         </div>
                     `).join('')}
@@ -104,7 +119,6 @@ function renderHome(container) {
 function renderMateria(materia, container) {
     const materiaInfo = MATERIAS.get(materia) || { previas: [], semestre: '?' };
     const previasDirectas = materiaInfo.previas;
-    const semestreActual = materiaInfo.semestre;
     const todasPrevias = new Set();
     const visited = new Set();
 
@@ -136,28 +150,29 @@ function renderMateria(materia, container) {
 
     container.innerHTML = `
         <a href="${BASE_URL}#" class="back-button">← Volver al listado</a>
-        <div class="materia-header">
-            <h1>S${semestreActual}: ${materia}</h1>
-        </div>
         <div class="requisitos">
             <div class="requisito-tipo">
                 <h3>Requisitos principales (${previasDirectas.length})</h3>
                 ${previasDirectas.length ? 
-                    previasDirectas.map(p => createMateriaLink(p).outerHTML).join('') : 
+                    previasDirectas.map(p => createMateriaElement(p).outerHTML).join('') : 
                     '<p>No tiene requisitos principales</p>'}
             </div>
             
             <div class="requisito-tipo">
                 <h3>Requisitos colaterales (${todasPrevias.size})</h3>
                 ${todasPrevias.size ? 
-                    [...todasPrevias].map(p => createMateriaLink(p, true).outerHTML).join('') : 
+                    [...todasPrevias].map(p => createMateriaElement(p).outerHTML).join('') : 
                     '<p>No tiene requisitos colaterales</p>'}
             </div>
         </div>
     `;
+
+    // Insertar header
+    const header = createMateriaElement(materia, true);
+    header.classList.add('materia-header-detalle');
+    container.insertBefore(header, container.firstChild);
 }
 
-// Inicialización
 if (window.location.hash) {
     render();
 }
