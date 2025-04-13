@@ -1,5 +1,5 @@
-// app.js
-const BASE_URL = '/';
+// app.js (versión corregida)
+const BASE_URL = '/v2/';
 const MATERIAS = new Map();
 
 // Cargar datos iniciales
@@ -16,7 +16,8 @@ fetch('info.json')
         });
         render();
         window.onhashchange = render;
-    }).catch(error => console.error('Error cargando datos:', error));
+    })
+    .catch(error => console.error('Error cargando datos:', error));
 
 function render() {
     const path = window.location.hash.substr(1);
@@ -56,19 +57,19 @@ function renderMateria(materia, container) {
     const materiaInfo = MATERIAS.get(materia) || { previas: [], semestre: '?' };
     const previasDirectas = materiaInfo.previas;
     const semestreActual = materiaInfo.semestre;
+    const todasPrevias = new Set(); // Declaración faltante
+    const visited = new Set();
 
-    // Función recursiva mejorada con detección de ciclos
     const getDependencias = (currentMateria, path = []) => {
         if (visited.has(currentMateria)) return;
         visited.add(currentMateria);
 
-        // Detectar ciclos
         if (path.includes(currentMateria)) {
             console.warn(`🚨 Ciclo detectado: ${[...path, currentMateria].join(' → ')}`);
             return;
         }
 
-        const dependencias = MATERIAS.get(currentMateria) || [];
+        const dependencias = MATERIAS.get(currentMateria)?.previas || [];
         dependencias.forEach(previa => {
             if (!previasDirectas.includes(previa)) {
                 todasPrevias.add(previa);
@@ -77,7 +78,6 @@ function renderMateria(materia, container) {
         });
     };
 
-    // Procesar dependencias
     previasDirectas.forEach(previa => {
         if (!MATERIAS.has(previa)) {
             console.warn(`⚠️ Materia no encontrada: ${previa}`);
@@ -86,8 +86,7 @@ function renderMateria(materia, container) {
         getDependencias(previa, [materia]);
     });
 
-    // Construir HTML
- container.innerHTML = `
+    container.innerHTML = `
         <a href="${BASE_URL}#" class="back-button">← Volver al listado</a>
         <div class="materia-header">
             <h1>S${semestreActual}: ${materia}</h1>
@@ -124,7 +123,6 @@ function renderMateria(materia, container) {
     `;
 }
 
-// Manejo inicial de carga
 if (window.location.hash) {
     render();
 }
