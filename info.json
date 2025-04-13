@@ -1,57 +1,8 @@
 {
-    "1": {
-        "Matemáticas Básicas": {
-            "Materias previas": []
-        },
-        "Introducción a la Programación": {
-            "Materias previas": []
-        },
-        "Ética Profesional": {
-            "Materias previas": []
-        }
-    },
-    "2": {
-        "Programación I": {
-            "Materias previas": ["Introducción a la Programación"]
-        },
-        "Álgebra Lineal": {
-            "Materias previas": ["Matemáticas Básicas"]
-        },
-        "Arquitectura de Computadoras": {
-            "Materias previas": []
-        }
-    },
-    "3": {
-        "Programación II": {
-            "Materias previas": ["Programación I"]
-        },
-        "Bases de Datos I": {
-            "Materias previas": ["Programación I", "Álgebra Lineal"]
-        },
-        "Sistemas Operativos": {
-            "Materias previas": ["Arquitectura de Computadoras"]
-        },
-        "Redes I": {
-            "Materias previas": ["Sistemas Operativos"]
-        }
-    },
-    "4": {
-        "Sistemas Distribuidos": {
-            "Materias previas": ["Redes I", "Programación II"]
-        },
-        "Inteligencia Artificial": {
-            "Materias previas": ["Programación II", "Álgebra Lineal"]
-        },
-        "Proyecto Final": {
-            "Materias previas": ["Bases de Datos I", "Programación II", "Sistemas Operativos"]
-        }
-    },
-    "5": {
-        "Sistemas Complejos": {
-            "Materias previas": ["Sistemas Distribuidos", "Inteligencia Artificial"]
-        },
-        "Optativa Avanzada": {
-            "Materias previas": []
-        }
-    }
+    "1": { "P1": { "Materias previas": ["P6"] } },
+    "2": { "P2": { "Materias previas": ["P1"] } },
+    "3": { "P3": { "Materias previas": ["P2"] } },
+    "4": { "P4": { "Materias previas": ["P3"] } },
+    "5": { "P5": { "Materias previas": ["P4"] } },
+    "6": { "P6": { "Materias previas": ["P5"] } }
 }
