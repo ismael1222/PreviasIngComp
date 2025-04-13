@@ -8,7 +8,7 @@
 		"Programacion 2": { "Materias previas": ["Programacion 1"] },
 		"Logica": { "Materias previas": ["Matematica Discreta 1"] },
 		"Geometria y Algebra Lineal 2":{"Materias previas":["Geometria y Algebra Lineal 1"]},
-		"Calculo e Integrales En Una Variable":{"Materias previas":["Matematica Inicial"]}
+		"Calculo e Integrales En Una Variable":{"Materias previas":["Matematica Inicial* (Preaprobada en algunos casos)"]}
 	},
 	"3": {
 		"P3": { "Materias previas": ["P2"] }
