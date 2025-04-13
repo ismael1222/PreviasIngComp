@@ -1,5 +1,5 @@
 // app.js
-const BASE_URL = '/v2/';
+const BASE_URL = '/';
 const MATERIAS = new Map();
 
 // Cargar datos iniciales
