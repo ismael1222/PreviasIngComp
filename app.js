@@ -26,11 +26,10 @@ const updateCookie = (materia, completada) => {
     document.cookie = `${COOKIE_NAME}=${encodeURIComponent(JSON.stringify(estado))}; path=${BASE_URL}; max-age=31536000`;
 };
 
-// Función para crear elementos de materia
+// Modificar la función createMateriaElement
 function createMateriaElement(materia, esHeader = false) {
     const sem = MATERIAS.get(materia)?.semestre || '?';
-    const completada = getCookieJSON()[materia] || false;
-    const estado = completada ? '✅' : '❌';
+    const estadoInicial = getCookieJSON()[materia] || false;
     
     const elemento = document.createElement(esHeader ? 'div' : 'a');
     const clase = esHeader ? 'materia-header' : 'materia-link';
@@ -39,9 +38,9 @@ function createMateriaElement(materia, esHeader = false) {
         elemento.href = `#/materia/${encodeURIComponent(materia)}`;
     }
     
-    elemento.className = `${clase} ${completada ? 'completada' : ''}`;
+    elemento.className = `${clase} ${estadoInicial ? 'completada' : ''}`;
     elemento.innerHTML = `
-        <span class="estado-materia">${estado}</span>
+        <span class="estado-materia">${estadoInicial ? '✅' : '❌'}</span>
         <span class="materia-info">
             S${sem}: ${materia}
         </span>
@@ -49,18 +48,19 @@ function createMateriaElement(materia, esHeader = false) {
 
     elemento.querySelector('.estado-materia').addEventListener('click', (e) => {
         e.preventDefault();
-        const nuevoEstado = !completada;
+        const nuevoEstado = !getCookieJSON()[materia]; // Leer siempre del estado actual
         updateCookie(materia, nuevoEstado);
+        
+        // Actualizar visualmente
         e.target.textContent = nuevoEstado ? '✅' : '❌';
         elemento.classList.toggle('completada', nuevoEstado);
         
-        // Actualizar en todas las instancias
-        if (esHeader) {
-            document.querySelectorAll(`.materia-link:contains("${materia}")`).forEach(link => {
-                link.querySelector('.estado-materia').textContent = nuevoEstado ? '✅' : '❌';
-                link.classList.toggle('completada', nuevoEstado);
+        // Actualizar todas las instancias
+        document.querySelectorAll(`.materia-link:contains("${materia}"), .materia-header-detalle:contains("${materia}")`)
+            .forEach(el => {
+                el.querySelector('.estado-materia').textContent = nuevoEstado ? '✅' : '❌';
+                el.classList.toggle('completada', nuevoEstado);
             });
-        }
     });
 
     return elemento;
