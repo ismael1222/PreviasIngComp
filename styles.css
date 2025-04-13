@@ -1,4 +1,3 @@
-/* styles.css */
 :root {
     --primary: #4a9cff;
     --secondary: #00bcd4;
@@ -36,25 +35,23 @@ body {
     text-decoration: none;
     margin: 5px 10px;
     display: inline-block;
-    padding: 8px 15px;
+    padding: 8px 15px 8px 35px;
     border-radius: 6px;
     transition: all 0.3s ease;
     border: 1px solid rgba(255,255,255,0.1);
     background-color: rgba(255,255,255,0.05);
-
     position: relative;
-    padding-left: 30px;
-    transition: background-color 0.3s;
+}
+
+.materia-link.completada {
+    background-color: rgba(76, 175, 80, 0.15) !important;
+    border-color: #4CAF50 !important;
 }
 
 .materia-link:hover {
     background: rgba(255,255,255,0.1);
     transform: translateY(-2px);
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-.materia-link.completada {
-    background-color: rgba(76, 175, 80, 0.15) !important;
-    border-color: #4CAF50 !important;
 }
 
 .estado-materia {
@@ -64,6 +61,7 @@ body {
     transform: translateY(-50%);
     cursor: pointer;
 }
+
 .requisitos {
     margin-top: 20px;
     padding: 20px;
@@ -109,19 +107,33 @@ body {
     padding-left: 20px;
 }
 
-.materia-header {
-    border-bottom: 2px solid var(--primary);
-    padding-bottom: 15px;
+.materia-header-detalle {
+    padding: 20px;
     margin-bottom: 25px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.materia-header h1 {
-    color: var(--primary);
-    font-size: 2.2em;
-    margin: 0;
+.materia-header-detalle.completada {
+    border-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.1);
 }
 
-/* Efectos adicionales */
+.materia-header-detalle .materia-info {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.materia-header-detalle .estado-materia {
+    font-size: 1.2em;
+    position: static;
+    transform: none;
+}
+
 @media (prefers-reduced-motion: no-preference) {
     .semestre {
         transition: transform 0.3s ease;
@@ -130,17 +142,6 @@ body {
     .semestre:hover {
         transform: translateX(5px);
     }
-}
-
-/* Ajustes para mejor contraste */
-.requisitos .materia-link {
-    color: var(--text-primary);
-    background-color: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.15);
-}
-
-.requisitos .materia-link:hover {
-    background-color: rgba(255,255,255,0.12);
 }
 
 p {
