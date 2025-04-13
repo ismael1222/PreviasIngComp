@@ -6,16 +6,17 @@ const MATERIAS = new Map();
 fetch('info.json')
     .then(response => response.json())
     .then(data => {
-        // Procesar estructura de datos
-        Object.values(data).forEach(semestre => {
+        Object.entries(data).forEach(([semestreKey, semestre]) => {
             Object.entries(semestre).forEach(([materia, info]) => {
-                MATERIAS.set(materia, info["Materias previas"]);
+                MATERIAS.set(materia, {
+                    previas: info["Materias previas"],
+                    semestre: semestreKey
+                });
             });
         });
         render();
         window.onhashchange = render;
-    })
-    .catch(error => console.error('Error cargando datos:', error));
+    }).catch(error => console.error('Error cargando datos:', error));
 
 function render() {
     const path = window.location.hash.substr(1);
@@ -36,12 +37,12 @@ function renderHome(container) {
             container.innerHTML = `
                 <h1>Plan de Estudios</h1>
                 <div class="semestre-container">
-                    ${Object.entries(data).map(([semestre, materias]) => `
+                    ${Object.entries(data).map(([semestreKey, semestre]) => `
                         <div class="semestre">
-                            <h2>Semestre ${semestre}</h2>
-                            ${Object.keys(materias).map(materia => `
+                            <h2>Semestre ${semestreKey}</h2>
+                            ${Object.keys(semestre).map(materia => `
                                 <a href="#/materia/${encodeURIComponent(materia)}" class="materia-link">
-                                    ${materia}
+                                    S${semestreKey}: ${materia}
                                 </a>
                             `).join('')}
                         </div>
@@ -52,9 +53,9 @@ function renderHome(container) {
 }
 
 function renderMateria(materia, container) {
-    const previasDirectas = MATERIAS.get(materia) || [];
-    const todasPrevias = new Set();
-    const visited = new Set();
+    const materiaInfo = MATERIAS.get(materia) || { previas: [], semestre: '?' };
+    const previasDirectas = materiaInfo.previas;
+    const semestreActual = materiaInfo.semestre;
 
     // Función recursiva mejorada con detección de ciclos
     const getDependencias = (currentMateria, path = []) => {
@@ -86,31 +87,37 @@ function renderMateria(materia, container) {
     });
 
     // Construir HTML
-    container.innerHTML = `
+ container.innerHTML = `
         <a href="${BASE_URL}#" class="back-button">← Volver al listado</a>
         <div class="materia-header">
-            <h1>${materia}</h1>
+            <h1>S${semestreActual}: ${materia}</h1>
         </div>
         <div class="requisitos">
             <div class="requisito-tipo">
                 <h3>Requisitos principales (${previasDirectas.length})</h3>
                 ${previasDirectas.length ? 
-                    previasDirectas.map(p => `
-                        <a href="#/materia/${encodeURIComponent(p)}" class="materia-link">
-                            📘 ${p}
-                        </a>
-                    `).join('') : 
+                    previasDirectas.map(p => {
+                        const sem = MATERIAS.get(p)?.semestre || '?';
+                        return `
+                            <a href="#/materia/${encodeURIComponent(p)}" class="materia-link">
+                                📘 S${sem}: ${p}
+                            </a>
+                        `;
+                    }).join('') : 
                     '<p>No tiene requisitos principales</p>'}
             </div>
             
             <div class="requisito-tipo">
                 <h3>Requisitos colaterales (${todasPrevias.size})</h3>
                 ${todasPrevias.size ? 
-                    [...todasPrevias].map(p => `
-                        <a href="#/materia/${encodeURIComponent(p)}" class="materia-link">
-                            📖 ${p}
-                        </a>
-                    `).join('') : 
+                    [...todasPrevias].map(p => {
+                        const sem = MATERIAS.get(p)?.semestre || '?';
+                        return `
+                            <a href="#/materia/${encodeURIComponent(p)}" class="materia-link">
+                                📖 S${sem}: ${p}
+                            </a>
+                        `;
+                    }).join('') : 
                     '<p>No tiene requisitos colaterales</p>'}
             </div>
         </div>
