@@ -1,6 +1,6 @@
 {
 	"1": {
-		"Programacion 1":[],
+		"Programacion 1": { "Materias previas": [] },
 		"Matematica Discreta 1": { "Materias previas": [] },
 		"Geometria y Algebra Lineal":{"Materias previas":[]}
 	},
