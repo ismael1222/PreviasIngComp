@@ -36,7 +36,7 @@ function renderHome(container) {
         .then(response => response.json())
         .then(data => {
             container.innerHTML = `
-                <h1>Plan de Estudios</h1>
+                <h1>Previas Ing. en Comp.</h1>
                 <div class="semestre-container">
                     ${Object.entries(data).map(([semestreKey, semestre]) => `
                         <div class="semestre">
