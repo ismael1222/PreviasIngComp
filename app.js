@@ -1,4 +1,4 @@
-const BASE_URL = '/v2/';
+const BASE_URL = '/';
 const MATERIAS = {};
 
 // Cargar datos iniciales
