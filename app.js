@@ -1,11 +1,61 @@
-// app.js (versión corregida)
+// app.js
 const BASE_URL = '/';
 const MATERIAS = new Map();
+const COOKIE_NAME = 'materias_completadas';
+
+// Funciones de cookies
+const getCookieJSON = () => {
+    try {
+        const cookie = document.cookie
+            .split('; ')
+            .find(row => row.startsWith(`${COOKIE_NAME}=`));
+        return cookie ? JSON.parse(decodeURIComponent(cookie.split('=')[1])) : {};
+    } catch {
+        return {};
+    }
+};
+
+const updateCookie = (materia, completada) => {
+    const estado = getCookieJSON();
+    
+    // Limpiar materias inexistentes
+    Object.keys(estado).forEach(m => {
+        if (!MATERIAS.has(m)) delete estado[m];
+    });
+
+    estado[materia] = completada;
+    document.cookie = `${COOKIE_NAME}=${encodeURIComponent(JSON.stringify(estado))}; path=${BASE_URL}; max-age=31536000`; // 1 año de duración
+};
+
+// Función para crear links de materias
+function createMateriaLink(materia, esColateral = false) {
+    const sem = MATERIAS.get(materia)?.semestre || '?';
+    const estado = getCookieJSON()[materia] ? '✅' : '❌';
+    
+    const link = document.createElement('a');
+    link.className = `materia-link ${getCookieJSON()[materia] ? 'completada' : ''}`;
+    link.href = `#/materia/${encodeURIComponent(materia)}`;
+    link.innerHTML = `
+        <span class="estado-materia">${estado}</span>
+        S${sem}: ${materia}
+    `;
+
+    link.querySelector('.estado-materia').addEventListener('click', (e) => {
+        e.preventDefault();
+        const nuevoEstado = !getCookieJSON()[materia];
+        updateCookie(materia, nuevoEstado);
+        e.target.textContent = nuevoEstado ? '✅' : '❌';
+        link.classList.toggle('completada', nuevoEstado);
+    });
+
+    return link;
+}
 
 // Cargar datos iniciales
-fetch('info.json')
+fetch(`info.json?nocache=${new Date().getTime()}`)
     .then(response => response.json())
     .then(data => {
+        MATERIAS.clear();
         Object.entries(data).forEach(([semestreKey, semestre]) => {
             Object.entries(semestre).forEach(([materia, info]) => {
                 MATERIAS.set(materia, {
@@ -32,20 +82,18 @@ function render() {
 }
 
 function renderHome(container) {
-    fetch('info.json')
+    fetch(`info.json?nocache=${new Date().getTime()}`)
         .then(response => response.json())
         .then(data => {
             container.innerHTML = `
-                <h1>Previas Ing. en Comp.</h1>
+                <h1>Plan de Estudios</h1>
                 <div class="semestre-container">
                     ${Object.entries(data).map(([semestreKey, semestre]) => `
                         <div class="semestre">
                             <h2>Semestre ${semestreKey}</h2>
-                            ${Object.keys(semestre).map(materia => `
-                                <a href="#/materia/${encodeURIComponent(materia)}" class="materia-link">
-                                    S${semestreKey}: ${materia}
-                                </a>
-                            `).join('')}
+                            ${Object.keys(semestre).map(materia => 
+                                createMateriaLink(materia).outerHTML
+                            ).join('')}
                         </div>
                     `).join('')}
                 </div>
@@ -57,7 +105,7 @@ function renderMateria(materia, container) {
     const materiaInfo = MATERIAS.get(materia) || { previas: [], semestre: '?' };
     const previasDirectas = materiaInfo.previas;
     const semestreActual = materiaInfo.semestre;
-    const todasPrevias = new Set(); // Declaración faltante
+    const todasPrevias = new Set();
     const visited = new Set();
 
     const getDependencias = (currentMateria, path = []) => {
@@ -95,34 +143,21 @@ function renderMateria(materia, container) {
             <div class="requisito-tipo">
                 <h3>Requisitos principales (${previasDirectas.length})</h3>
                 ${previasDirectas.length ? 
-                    previasDirectas.map(p => {
-                        const sem = MATERIAS.get(p)?.semestre || '?';
-                        return `
-                            <a href="#/materia/${encodeURIComponent(p)}" class="materia-link">
-                                📘 S${sem}: ${p}
-                            </a>
-                        `;
-                    }).join('') : 
+                    previasDirectas.map(p => createMateriaLink(p).outerHTML).join('') : 
                     '<p>No tiene requisitos principales</p>'}
             </div>
             
             <div class="requisito-tipo">
                 <h3>Requisitos colaterales (${todasPrevias.size})</h3>
                 ${todasPrevias.size ? 
-                    [...todasPrevias].map(p => {
-                        const sem = MATERIAS.get(p)?.semestre || '?';
-                        return `
-                            <a href="#/materia/${encodeURIComponent(p)}" class="materia-link">
-                                📖 S${sem}: ${p}
-                            </a>
-                        `;
-                    }).join('') : 
+                    [...todasPrevias].map(p => createMateriaLink(p, true).outerHTML).join('') : 
                     '<p>No tiene requisitos colaterales</p>'}
             </div>
         </div>
     `;
 }
 
+// Inicialización
 if (window.location.hash) {
     render();
 }
