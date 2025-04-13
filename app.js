@@ -52,15 +52,30 @@ function renderHome(container) {
 
 function renderMateria(materia, container) {
     const previasDirectas = MATERIAS[materia] || [];
-    const previasColaterales = new Set();
-    
-    // Buscar requisitos colaterales
-    previasDirectas.forEach(previa => {
-        (MATERIAS[previa] || []).forEach(p => {
-            if (!previasDirectas.includes(p)) {
-                previasColaterales.add(p);
+    const todasPrevias = new Set();
+    const visited = new Set(); // Para detección de ciclos
+
+    // Función recursiva mejorada
+    const getDependencias = (currentMateria, path = []) => {
+        if (visited.has(currentMateria)) return;
+        visited.add(currentMateria);
+
+        // Detectar ciclos
+        if (path.includes(currentMateria)) {
+            console.warn(`Ciclo detectado: ${[...path, currentMateria].join(' → ')}`);
+            return;
+        }
+
+        (MATERIAS[currentMateria] || []).forEach(previa => {
+            if (!previasDirectas.includes(previa)) {
+                todasPrevias.add(previa);
             }
+            getDependencias(previa, [...path, currentMateria]);
         });
+    };
+
+    previasDirectas.forEach(previa => {
+        getDependencias(previa, [materia]);
     });
 
     container.innerHTML = `
@@ -81,9 +96,9 @@ function renderMateria(materia, container) {
             </div>
             
             <div class="requisito-tipo">
-                <h3>Requisitos colaterales (${previasColaterales.size})</h3>
-                ${previasColaterales.size ? 
-                    [...previasColaterales].map(p => `
+                <h3>Requisitos colaterales (${todasPrevias.size})</h3>
+                ${todasPrevias.size ? 
+                    [...todasPrevias].map(p => `
                         <a href="#/materia/${encodeURIComponent(p)}" class="materia-link">
                             📖 ${p}
                         </a>
