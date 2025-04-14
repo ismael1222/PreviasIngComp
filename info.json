@@ -96,6 +96,7 @@
 		"Proyecto de Grado": { "Materias previas": [] }
 	},
 	"X de explicacion": {
-		"Matematica Discreta 1 o Calculo diferencial e integral en una variable":{ "Materias previas": ["Matematica Discreta 1", "Calculo diferencial e integral en una variable"] }
+		"Matematica Discreta 1 o Calculo diferencial e integral en una variable":{ "Materias previas": ["Matematica Discreta 1", "Calculo diferencial e integral en una variable"] },
+		"Matematica Inicial":{ "Materias previas": [] }
 	}
 }
