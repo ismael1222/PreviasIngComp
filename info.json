@@ -97,6 +97,7 @@
 	},
 	"X de explicacion": {
 		"Matematica Discreta 1 o Calculo diferencial e integral en una variable":{ "Materias previas": ["Matematica Discreta 1", "Calculo diferencial e integral en una variable"] },
-		"Matematica Inicial":{ "Materias previas": [] }
+		"Matematica Inicial":{ "Materias previas": [] },
+		"llegar al semestre":{ "Materias previas": [] }
 	}
 }
