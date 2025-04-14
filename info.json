@@ -22,7 +22,7 @@
 			"Materias previas": [
 				"Programacion 2",
 				"Programacion 1",
-				"MD1 o Calculo diferencial e integral en una variable"
+				"Matematica discreta 1 o Calculo diferencial e integral en una variable"
 			]
 		},
 		"Programacion 3": {
@@ -96,6 +96,7 @@
 		"Proyecto de Grado": { "Materias previas": [] }
 	},
 	"X de explicacion": {
-		"Test1": { "Materias Previas": ["Tes2", "Test3"] }
+		"Explicacion": { "Materias Previas": ["Esta materia generica es para que sirva de \"redireccion\" de las materias que no existen. Ej, no hay una materia llamada \"Matematica discreta 1 o Calculo diferencial e integral en una variable\", pero si hay por separado. Este apartado es para redireccionar a las materias correspondientes."]},
+		"Matematica discreta 1 o Calculo diferencial e integral en una variable":{ "Materias previas": ["Matematica Discreta 1", "Calculo diferencial e integral en una variable"] }
 	}
 }
