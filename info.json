@@ -5,7 +5,7 @@
 	  "Programacion 1": {"Materias previas": []}
 	},
 	"2": {
-	  "Calculo diferencial e integral en una variable": {"Materias previas": []},
+	  "Calculo diferencial e integral en una variable": {"Materias previas": ["Matematica Inicial"]},
 	  "Geometria y algebra Lineal 2": {"Materias previas": []},
 	  "Logica": {"Materias previas": []},
 	  "Programacion 2": {"Materias previas": []}
