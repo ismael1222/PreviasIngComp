@@ -1,14 +1,14 @@
 {
 	"1": {
-		"Geometria y algebra lineal 1": { "Materias previas": [] },
-		"Matematica discreta 1": { "Materias previas": [] },
+		"Geometria y Algebra lineal 1": { "Materias previas": [] },
+		"Matematica Discreta 1": { "Materias previas": [] },
 		"Programacion 1": { "Materias previas": [] }
 	},
 	"2": {
 		"Calculo diferencial e integral en una variable": {
 			"Materias previas": ["Matematica Inicial"]
 		},
-		"Geometria y algebra Lineal 2": {
+		"Geometria y Algebra Lineal 2": {
 			"Materias previas": ["Geometria y Algebra Lineal 1"]
 		},
 		"Logica": { "Materias previas": ["Matematica Discreta 1"] },
@@ -22,7 +22,7 @@
 			"Materias previas": [
 				"Programacion 2",
 				"Programacion 1",
-				"Matematica discreta 1 o Calculo diferencial e integral en una variable"
+				"Matematica Discreta 1 o Calculo diferencial e integral en una variable"
 			]
 		},
 		"Programacion 3": {
@@ -42,7 +42,7 @@
 				"Geometria y Algebra Lineal 1"
 			]
 		},
-		"Matematica discreta 2": {
+		"Matematica Discreta 2": {
 			"Materias previas": [
 				"Geometria y Algebra Lineal 1",
 				"Matematica Discreta 1"
@@ -96,6 +96,6 @@
 		"Proyecto de Grado": { "Materias previas": [] }
 	},
 	"X de explicacion": {
-		"Matematica discreta 1 o Calculo diferencial e integral en una variable":{ "Materias previas": ["Matematica Discreta 1", "Calculo diferencial e integral en una variable"] }
+		"Matematica Discreta 1 o Calculo diferencial e integral en una variable":{ "Materias previas": ["Matematica Discreta 1", "Calculo diferencial e integral en una variable"] }
 	}
 }
