@@ -1,52 +1,101 @@
 {
 	"1": {
-	  "Geometria y algebra lineal 1": {"Materias previas": []},
-	  "Matematica discreta 1": {"Materias previas": []},
-	  "Programacion 1": {"Materias previas": []}
+		"Geometria y algebra lineal 1": { "Materias previas": [] },
+		"Matematica discreta 1": { "Materias previas": [] },
+		"Programacion 1": { "Materias previas": [] }
 	},
 	"2": {
-	  "Calculo diferencial e integral en una variable": {"Materias previas": ["Matematica Inicial"]},
-	  "Geometria y algebra Lineal 2": {"Materias previas": []},
-	  "Logica": {"Materias previas": []},
-	  "Programacion 2": {"Materias previas": []}
+		"Calculo diferencial e integral en una variable": {
+			"Materias previas": ["Matematica Inicial"]
+		},
+		"Geometria y algebra Lineal 2": {
+			"Materias previas": ["Geometria y Algebra Lineal 1"]
+		},
+		"Logica": { "Materias previas": ["Matematica Discreta 1"] },
+		"Programacion 2": { "Materias previas": ["Programacion 1"] }
 	},
 	"3": {
-	  "Calculo diferencial e integral en varias variables": {"Materias previas": []},
-	  "Arquitectura de computadoras": {"Materias previas": []},
-	  "Programacion 3": {"Materias previas": []},
-	  "Economia*": {"Materias previas": []}
+		"Calculo diferencial e integral en varias variables": {
+			"Materias previas": ["Calculo diferencial e integral en una variable"]
+		},
+		"Arquitectura de computadoras": {
+			"Materias previas": [
+				"Programacion 2",
+				"Programacion 1",
+				"MD1 o Calculo diferencial e integral en una variable"
+			]
+		},
+		"Programacion 3": {
+			"Materias previas": [
+				"Matematica Discreta 1",
+				"Programacion 1",
+				"Programacion 2"
+			]
+		},
+		"Economia*": { "Materias previas": ["llegar al semestre"] }
 	},
 	"4": {
-	  "Probabilidad y estadistica": {"Materias previas": []},
-	  "Matematica discreta 2": {"Materias previas": []},
-	  "Programacion 4": {"Materias previas": []},
-	  "Sistemas Operativos": {"Materias previas": []}
+		"Probabilidad y estadistica": {
+			"Materias previas": [
+				"Calculo diferencial e integral en una variable",
+				"Matematica Discreta 1",
+				"Geometria y Algebra Lineal 1"
+			]
+		},
+		"Matematica discreta 2": {
+			"Materias previas": [
+				"Geometria y Algebra Lineal 1",
+				"Matematica Discreta 1"
+			]
+		},
+		"Programacion 4": {
+			"Materias previas": [
+				"Geometria y Algebra Lineal 1",
+				"Matematica Discreta 1",
+				"Calculo diferencial e integral en una variable",
+				"Programacion 2"
+			]
+		},
+		"Sistemas Operativos": {
+			"Materias previas": [
+				"Matematica Discreta 1",
+				"Calculo diferencial e integral en una variable",
+				"Arquitectura de Computadoras",
+				"Geometria y Algebra Lineal 1",
+				"Programacion 2"
+			]
+		}
 	},
 	"5": {
-	  "Fundamentos de Bases de Datos": {"Materias previas": []},
-	  "Taller de Programacion": {"Materias previas": []},
-	  "Redes de computadoras": {"Materias previas": []},
-	  "Politiacas Cientificas en Inf y Comp.*": {"Materias previas": []}
+		"Fundamentos de Bases de Datos": { "Materias previas": [] },
+		"Taller de Programacion": { "Materias previas": [] },
+		"Redes de computadoras": { "Materias previas": [] },
+		"Politiacas Cientificas en Inf y Comp.*": { "Materias previas": [] }
 	},
 	"6": {
-	  "Introduccion a la Investigacion de Operaciones": {"Materias previas": []},
-	  "Introduccion a la Ing de Software": {"Materias previas": []},
-	  "Teoria de Lenguajes": {"Materias previas": []},
-	  "Administracion General para Ingenieros*": {"Materias previas": []}
+		"Introduccion a la Investigacion de Operaciones": {
+			"Materias previas": []
+		},
+		"Introduccion a la Ing de Software": { "Materias previas": [] },
+		"Teoria de Lenguajes": { "Materias previas": [] },
+		"Administracion General para Ingenieros*": { "Materias previas": [] }
 	},
 	"7": {
-	  "Metodos Numericos": {"Materias previas": []},
-	  "Proyecto de Ingenieria en Software": {"Materias previas": []},
-	  "Fisica 1*": {"Materias previas": []},
-	  "Practica de Administracion para Ingenieros*": {"Materias previas": []}
+		"Metodos Numericos": { "Materias previas": [] },
+		"Proyecto de Ingenieria en Software": { "Materias previas": [] },
+		"Fisica 1*": { "Materias previas": [] },
+		"Practica de Administracion para Ingenieros*": { "Materias previas": [] }
 	},
 	"8": {
-	  "Prog. Funcional o Prog. Logica": {"Materias previas": []}
+		"Prog. Funcional o Prog. Logica": { "Materias previas": [] }
 	},
 	"9": {
-	  "Proyecto de Grado": {"Materias previas": []}
+		"Proyecto de Grado": { "Materias previas": [] }
 	},
 	"10": {
-	  "Proyecto de Grado": {"Materias previas": []}
+		"Proyecto de Grado": { "Materias previas": [] }
+	},
+	"Sinonimos": {
+		"Test1": { "Materias Previas": ["Tes2", "Test3"] }
 	}
-  }
+}
